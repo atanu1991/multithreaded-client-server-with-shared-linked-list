@@ -5,7 +5,7 @@ Basic functionality of ECHO SERVER implemented.
 Also template of LinkedList code included.
 
 To Run it:
---> Git clone the repo.<br>
+--> Git clone the repo.
 --> cd ~/multithreaded-client-server-with-shared-linked-list
 --> Run 'make'
 --> Run './serv <PORT NUMBER>' on one terminal window.
