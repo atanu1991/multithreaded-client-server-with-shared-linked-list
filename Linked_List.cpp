@@ -1,33 +1,4 @@
-#include <iostream>
-#include <string>
-
-template <class T>
-
-struct Node {
-    T data;
-    Node * next;
-};
-
-template <class T>
-
-class LinkedList {
-public:
-
-    LinkedList() : head(NULL), size(0) {
-    };
-
-    ~LinkedList() {
-        destroyList();
-    };
-    bool addNode(T data);
-    bool deleteNode(T data);
-    Node<T> * searchNode(T data);
-    void printList();
-    void destroyList();
-private:
-    Node<T> * head;
-    int size;
-};
+#include "Linked_List.h"
 
 template <class T>
 bool LinkedList<T>::addNode(T data) {
@@ -110,10 +81,8 @@ int main() {
 
     LinkedList<int> intlist;
     LinkedList<float> floatlist;
-    LinkedList<std::string> stringlist;
-
-    stringlist.addNode("atanu");
-    stringlist.printList();
-
+    LinkedList<std::string> *stringlist = new LinkedList<std::string>;
+    (*stringlist).addNode("atanu");
+    (*stringlist).printList();
     return 0;
 }
