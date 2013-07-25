@@ -9,7 +9,7 @@ To Run it:
 --> cd ~/multithreaded-client-server-with-shared-linked-list
 --> Run 'make'
 --> Run './serv <PORT NUMBER>' on one terminal window.
---> Fir up as many other terminal windows and run './cli <PORT NUMBER> [<IP ADDRESS>]'
+--> Fire up as many other terminal windows and run './cli <PORT NUMBER> [<IP ADDRESS>]'
 
 TODO:
 1) Parse client side queries (using lex,yacc / bison,flex).
