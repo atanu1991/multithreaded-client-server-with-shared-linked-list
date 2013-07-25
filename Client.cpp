@@ -24,7 +24,7 @@ Client::~Client() {
 void Client::handle_client(FILE* fp, int sock_fd) {
     int n;
     char sendline[MAXLINE], recvline[MAXLINE + 1];
-    printf("\nEnter A Message or BYE to exit\n");
+    printf("\nEnter A Message or \"exit\" to exit\n");
     while (fgets(sendline, MAXLINE, fp) != NULL) {
         n = strlen(sendline);
         if (Helper::writeline(sock_fd, sendline, n) != n)
@@ -33,7 +33,7 @@ void Client::handle_client(FILE* fp, int sock_fd) {
         n = Helper::readline(sock_fd, recvline, MAXLINE);
         if (n < 0)
             throw SocketException("CLIENT:Read error on socket\n");
-        if (strncmp(recvline, "BYE", 3) == 0)
+        if (strncmp(recvline, "exit", 4) == 0)
             break;
         memset(recvline, 0, MAXLINE + 1);
     }

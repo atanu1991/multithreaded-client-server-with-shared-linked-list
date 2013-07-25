@@ -23,14 +23,14 @@ public:
     void start_listening();
     Socket s;
     time_t rawtime;
-    
+
 private:
-    
+
     static void * wait_stdin(void *arg);
     static void * process_request(void *arg);
     pthread_t stdin_thread;
     pthread_t process_thread;
-    static std::multimap<std::string, std::string> client_details;
+    static std::map<int, std::pair<std::string, std::string> > client_details;
 
 };
 #endif	/* SERVER_H */

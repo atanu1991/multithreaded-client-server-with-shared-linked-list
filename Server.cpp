@@ -22,7 +22,7 @@ Server::Server(int port) {
 Server::~Server() {
 }
 
-std::multimap<std::string, std::string> Server::client_details;
+std::map<int, std::pair<std::string, std::string> > Server::client_details;
 
 /*Retrieve an input Line from the connected socket then simply write it back to the same socket*/
 void * Server::process_request(void *parm) {
@@ -41,7 +41,8 @@ void * Server::process_request(void *parm) {
             break;
         }
         printf("\nServer Echoed:  %s\n", buffer);
-    } while (strncmp(buffer, "BYE", 3));
+    } while (strncmp(buffer, "exit", 4));
+    client_details.erase(tmp);
     if (close(clientsocket) < 0) {
         throw SocketException("Error in calling close");
     }
@@ -55,10 +56,11 @@ void* Server::wait_stdin(void *arg) {
     while (1) {
         std::getline(std::cin, text);
         if (0 == text.compare("show client details")) {
-            std::multimap<std::string, std::string>::iterator iter = client_details.begin();
+
+            std::map<int, std::pair<std::string, std::string> >::iterator iter = client_details.begin();
 
             for (iter = Server::client_details.begin(); iter != Server::client_details.end(); ++iter)
-                std::cout << iter->first << ":" << iter->second << '\n';
+                std::cout << (iter->second).first << ":" << (iter->second).second << '\n';
 
         }
 
@@ -86,7 +88,7 @@ void Server::start_listening() {
         time(&rawtime);
         time_accept = ctime(&rawtime);
 
-        client_details.insert(std::pair<std::string, std::string>(cli_name, time_accept));
+        client_details.insert(std::make_pair(*conn_s, std::make_pair(cli_name, time_accept)));
 
         if ((pthread_create(&process_thread, NULL, &process_request, conn_s)) != 0) {
             std::cerr << ("SERVER:Error Creating A thread for Socket(%d)\n",
