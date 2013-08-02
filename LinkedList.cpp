@@ -1,24 +1,38 @@
-#include "Linked_List.h"
+#include "LinkedList.h"
+
+template <class T>
+void LinkedList<T>::init_lock() {
+    pthread_rwlock_wrlock(&rwlock);
+}
+
+template <class T>
+void LinkedList<T>::release_lock() {
+    pthread_rwlock_unlock(&rwlock);
+}
 
 template <class T>
 bool LinkedList<T>::addNode(T data) {
-
+    init_lock();
     try {
         Node<T> * tmp = new Node<T>();
         tmp->data = data;
         tmp->next = head;
         head = tmp;
         ++size;
+        release_lock();
         return true;
     } catch (std::exception & ex) {
+        release_lock();
         return false;
     }
+
 }
 
 template <class T>
 bool LinkedList<T>::deleteNode(T data) {
-    Node<T> *curr = head, *prev = NULL;
 
+    init_lock();
+    Node<T> *curr = head, *prev = NULL;
     while (curr) {
         if (curr->data == data) break;
 
@@ -34,10 +48,13 @@ bool LinkedList<T>::deleteNode(T data) {
         }
         delete(curr);
         --size;
+        release_lock();
         return true;
     } else {
+        release_lock();
         return false;
     }
+
 }
 
 template <class T>
@@ -60,9 +77,8 @@ void LinkedList<T>::printList() {
         std::cout << tmp->data << "|";
         tmp = tmp->next;
     }
-
     if (printNewLine) {
-        std::cout << std::endl;
+        std::cerr << std::endl;
     }
 }
 
@@ -77,6 +93,7 @@ void LinkedList<T>::destroyList() {
     }
 }
 
+/*
 int main() {
 
     LinkedList<int> intlist;
@@ -85,4 +102,4 @@ int main() {
     (*stringlist).addNode("atanu");
     (*stringlist).printList();
     return 0;
-}
+}*/
