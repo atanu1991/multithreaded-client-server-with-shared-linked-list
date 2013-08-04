@@ -24,7 +24,6 @@ public:
     };
 
     ~LinkedList() {
-        //destroyList();
     };
     bool addNode(T data);
     bool deleteNode(T data);

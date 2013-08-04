@@ -42,11 +42,9 @@ bool LinkedList<T>::deleteNode(T data) {
         while (curr) {
             if (curr->data == data)
                 break;
-
             prev = curr;
             curr = curr->next;
         }
-
         if (curr) {
             if (prev) {
                 prev->next = curr->next;
@@ -63,7 +61,7 @@ bool LinkedList<T>::deleteNode(T data) {
             return false;
         }
     } else
-        return true;
+        return false;
 }
 
 template <class T>
@@ -111,16 +109,7 @@ void LinkedList<T>::destroyList() {
         head = head->next;
         delete(tmp);
     }
+    size=0;
     release_lock();
 }
 
-/*
-int main() {
-
-    LinkedList<int> intlist;
-    LinkedList<float> floatlist;
-    LinkedList<std::string> *stringlist = new LinkedList<std::string>;
-    (*stringlist).addNode("atanu");
-    (*stringlist).printList();
-    return 0;
-}*/

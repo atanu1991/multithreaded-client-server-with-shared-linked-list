@@ -16,6 +16,7 @@
 #include "Lexheader.h"
 #include "yacc_file.tab.hh"
 #include <map>
+#include <sstream>
 #include <time.h>
 
 extern LinkedList<std::string> stringlist;
@@ -37,7 +38,10 @@ public:
     void start_listening();
     Socket s;
     time_t rawtime;
-    static void insert_operation(struct parsed_vals *);
+    static void insert_operation(struct parsed_vals *, std::string &);
+    static void find_operation(struct parsed_vals *, std::string &);
+    static void delete_operation(struct parsed_vals *, std::string &);
+    static void delete_all_operation();
 private:
 
     pthread_t stdin_thread;

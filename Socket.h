@@ -37,13 +37,13 @@ public:
     bool is_valid() const {
         return m_sock != -1;
     }
-
+    
+    int close();
     int m_sock;
 
 private:
-
     struct sockaddr_in m_addr;
-
+    
 };
 
 #endif  

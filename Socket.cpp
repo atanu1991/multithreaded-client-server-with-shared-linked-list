@@ -26,7 +26,7 @@ int Socket::create() {
             0);
 
     if (!is_valid())
-        throw SocketException("Could not create listening socket.");
+        throw new SocketException("Could not create listening socket.");
 
     return m_sock;
 
@@ -47,7 +47,7 @@ int Socket::bind(const int port) {
             sizeof ( m_addr));
 
     if (bind_return == -1) {
-        throw SocketException("Could not bind to port.");
+        throw new SocketException("Could not bind to port.");
     }
 
     return bind_return;
@@ -61,7 +61,7 @@ int Socket::listen() const {
     int listen_return = ::listen(m_sock, LISTENQ);
 
     if (listen_return == -1) {
-        throw SocketException("Could not listen to socket.");
+        throw new SocketException("Could not listen to socket.");
     }
 
     return listen_return;
@@ -75,7 +75,7 @@ std::string Socket::accept(int *acc_ret) const {
     int ret_val = ::accept(m_sock, (struct sockaddr *) & (clientaddr), (socklen_t *) & sizeofclientaddr);
 
     if (ret_val <= 0)
-        throw SocketException("Could not create client socket.");
+        throw new SocketException("Could not create client socket.");
     else {
         *acc_ret = ret_val;
         char clntName[INET_ADDRSTRLEN];
@@ -103,5 +103,11 @@ bool Socket::connect(const std::string host, const int port) {
     if (status == 0)
         return true;
     else
-        throw SocketException("Client Cannot Connect To Server (Invalid Port or Server Problem)\n");
+        throw new SocketException("Client Cannot Connect To Server (Invalid Port or Server Problem)\n");
+}
+
+int Socket::close() {
+    if (::close(m_sock) != 0)
+        throw new SocketException("Cannot close due to error (Wrong file-descriptor or I/O error) \n");
+    return 0;
 }

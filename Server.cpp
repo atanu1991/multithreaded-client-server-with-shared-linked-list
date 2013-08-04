@@ -27,18 +27,96 @@ Server::Server(int port) {
 Server::~Server() {
 }
 
-void Server::insert_operation(struct parsed_vals * parm) {
+void Server::insert_operation(struct parsed_vals * parm, std::string &msg) {
+    std::stringstream msg_stream;
+    bool success = false;
     switch (parm->type) {
         case INT_TYPE:
-            intlist.addNode((parm->data).int_data);
+            if (intlist.addNode((parm->data).int_data)) {
+                msg_stream << (parm->data).int_data << " successfully inserted into the list\n";
+                success = true;
+            }
             break;
         case FLOAT_TYPE:
-            floatlist.addNode((parm->data).float_data);
+            if (floatlist.addNode((parm->data).float_data)) {
+                msg_stream << (parm->data).float_data << " successfully inserted into the list\n";
+                success = true;
+            }
             break;
         case STRING_TYPE:
-            stringlist.addNode((parm->data).str_data);
+            if (stringlist.addNode((parm->data).str_data)) {
+                msg_stream << (parm->data).str_data << " successfully inserted into the list\n";
+                success = true;
+            }
             break;
     }
+    if (!success)
+        msg_stream << "Insertion failed due to a reason I couldn't figure out.\
+Would you mind trying again?\n";
+    msg = msg_stream.str();
+}
+
+void Server::delete_operation(struct parsed_vals * parm, std::string &msg) {
+    std::stringstream msg_stream;
+    bool success = false;
+    switch (parm->type) {
+        case INT_TYPE:
+            if (intlist.deleteNode((parm->data).int_data)) {
+                msg_stream << (parm->data).int_data << " successfully deleted\n";
+                success = true;
+            }
+            break;
+        case FLOAT_TYPE:
+            if (floatlist.deleteNode((parm->data).float_data)) {
+                msg_stream << (parm->data).float_data << " successfully deleted\n";
+                success = true;
+            }
+            break;
+        case STRING_TYPE:
+            if (stringlist.deleteNode((parm->data).str_data)) {
+                msg_stream << (parm->data).str_data << " successfully deleted\n";
+                success = true;
+            }
+            break;
+    }
+    if (!success)
+        msg_stream << "Deletion failed as the element was not found in the list.\
+Why don't you try inserting it?\n";
+    msg = msg_stream.str();
+}
+
+void Server::find_operation(struct parsed_vals * parm, std::string &msg) {
+    std::stringstream msg_stream;
+    bool success = false;
+    switch (parm->type) {
+        case INT_TYPE:
+            if (intlist.check_if_exists((parm->data).int_data)) {
+                msg_stream << (parm->data).int_data << " found in the list\n";
+                success = true;
+            }
+            break;
+        case FLOAT_TYPE:
+            if (floatlist.check_if_exists((parm->data).float_data)) {
+                msg_stream << (parm->data).float_data << " found in the list\n";
+                success = true;
+            }
+            break;
+        case STRING_TYPE:
+            if (stringlist.check_if_exists((parm->data).str_data)) {
+                msg_stream << (parm->data).str_data << " found in the list\n";
+                success = true;
+            }
+            break;
+    }
+    if (!success)
+        msg_stream << "This value wasn't found in the list! Why don't you try inserting it?\n";
+    msg = msg_stream.str();
+}
+
+void Server::delete_all_operation() {
+    intlist.destroyList();
+    floatlist.destroyList();
+    stringlist.destroyList();
 }
 
 /*Retrieve an input Line from the connected socket then simply write it back to the same socket*/
@@ -48,48 +126,55 @@ void * process_request(void *parm) {
     pthread_detach(pthread_self());
     int clientsocket = tmp;
     char buffer[MAXLINE];
+    std::string mssg;
     while (1) {
         if (Helper::readline(clientsocket, buffer, MAXLINE - 1) < 0) {
             break;
         }
-        printf("\nClient with socket id %d Said:  %s\n", clientsocket, buffer);
+        printf("Client with socket id %d Said: %s\n", clientsocket, buffer);
         if (strncmp(buffer, "exit", 4) == 0) {
-            Helper::writeline(clientsocket, buffer, strlen(buffer));
+            Helper::writeline(clientsocket, buffer, sizeof buffer);
             break;
         }
         struct parsed_vals tokens;
         YY_BUFFER_STATE bp = yy_scan_string(buffer);
         yy_switch_to_buffer(bp);
+
         int ret_val = yyparse((void *) &tokens);
         if (ret_val == 0) {
             switch (tokens.cmd) {
                 case INSERT_CMD:
-                    Server::insert_operation(&tokens);
+                    Server::insert_operation(&tokens, mssg);
                     break;
                 case FIND_CMD:
-                    //
+                    Server::find_operation(&tokens, mssg);
                     break;
                 case DELETE_CMD:
+                    Server::delete_operation(&tokens, mssg);
                     break;
                 case DELALL_CMD:
+                    Server::delete_all_operation();
+                    mssg = "All items successfully deleted\n";
                     break;
                 case SHOW_CMD:
-                    printf("%d integers\n%d strings\n%d floats\n", intlist.size, stringlist.size, floatlist.size);
+                    std::stringstream msg;
+                    msg << intlist.size << " integers\t" << floatlist.size << " \
+floats\t" << stringlist.size << " strings\n";
+                    mssg = msg.str();
                     break;
             }
-            //stringlist.addNode(tokens.data.str_data);
+        } else {
+            mssg = "Invalid command issued!!!\n";
         }
         yy_delete_buffer(bp);
-
-        if (Helper::writeline(clientsocket, buffer, strlen(buffer)) < 0) {
+        
+        if (Helper::writeline(clientsocket, (char *) (mssg.c_str()), mssg.length()) < 0) {
             break;
-        }
-        printf("\nServer Echoed:  %s\n", buffer);
+        }  
         memset(buffer, 0, sizeof buffer);
     }
     client_details.erase(clientsocket);
-    //stringlist.printList();
-    if (close(clientsocket) < 0) {
+    if (::close(clientsocket) < 0) {
         throw SocketException("Error in calling close");
     }
     pthread_exit(NULL);
@@ -101,14 +186,11 @@ void* wait_stdin(void *arg) {
     while (1) {
         std::getline(std::cin, text);
         if (0 == text.compare("show client details")) {
-
             std::map<int, std::pair<std::string, std::string> >::iterator iter = client_details.begin();
 
             for (iter = client_details.begin(); iter != client_details.end(); ++iter)
                 std::cout << (iter->second).first << ":" << (iter->second).second << '\n';
-
         }
-
     }
     pthread_exit(NULL);
 
@@ -141,5 +223,4 @@ void Server::start_listening() {
             exit(EXIT_FAILURE);
         }
     }
-
 }

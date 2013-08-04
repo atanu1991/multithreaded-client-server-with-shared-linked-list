@@ -8,9 +8,6 @@
 #include "Socket.h"
 #include <string>
 
-/*
- * 
- */
 int main(int argc, char* argv[]) {
     int port;
     char *endptr; //for strtol()
@@ -32,8 +29,7 @@ int main(int argc, char* argv[]) {
 
     Client cli((std::string) svraddr, port);
     cli.handle_client(stdin, cli.socket_id);
-    //::close(cli.socket_id);
+    (cli.s).close();
 
     return 0;
 }
-

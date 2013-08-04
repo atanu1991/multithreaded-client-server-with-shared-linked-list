@@ -35,7 +35,9 @@ void Client::handle_client(FILE* fp, int sock_fd) {
             throw SocketException("CLIENT:Read error on socket\n");
         if (strncmp(recvline, "exit", 4) == 0)
             break;
+        printf("%s", recvline);
         memset(recvline, 0, MAXLINE + 1);
+        memset(sendline, 0, MAXLINE + 1);
     }
     if (ferror(fp)) {
         std::cerr << ("CLIENT:Error reading file\n");
