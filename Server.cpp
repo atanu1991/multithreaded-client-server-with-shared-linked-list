@@ -10,6 +10,11 @@
 #include "SocketException.h"
 #include <map>
 
+std::map<int, std::pair<std::string, std::string> > client_details;
+LinkedList<std::string> stringlist;
+LinkedList<int> intlist;
+LinkedList<float> floatlist;
+
 Server::Server(int port) {
 
     printf("Starting the Server With Port(%d)\n", port);
@@ -22,35 +27,75 @@ Server::Server(int port) {
 Server::~Server() {
 }
 
-std::map<int, std::pair<std::string, std::string> > Server::client_details;
+void Server::insert_operation(struct parsed_vals * parm) {
+    switch (parm->type) {
+        case INT_TYPE:
+            intlist.addNode((parm->data).int_data);
+            break;
+        case FLOAT_TYPE:
+            floatlist.addNode((parm->data).float_data);
+            break;
+        case STRING_TYPE:
+            stringlist.addNode((parm->data).str_data);
+            break;
+    }
+}
 
 /*Retrieve an input Line from the connected socket then simply write it back to the same socket*/
-void * Server::process_request(void *parm) {
+void * process_request(void *parm) {
     int tmp = *((int *) parm);
     free(parm);
     pthread_detach(pthread_self());
     int clientsocket = tmp;
     char buffer[MAXLINE];
-    do {
+    while (1) {
         if (Helper::readline(clientsocket, buffer, MAXLINE - 1) < 0) {
             break;
         }
         printf("\nClient with socket id %d Said:  %s\n", clientsocket, buffer);
-        //Parse here --- Have to learn parsing :(
+        if (strncmp(buffer, "exit", 4) == 0) {
+            Helper::writeline(clientsocket, buffer, strlen(buffer));
+            break;
+        }
+        struct parsed_vals tokens;
+        YY_BUFFER_STATE bp = yy_scan_string(buffer);
+        yy_switch_to_buffer(bp);
+        int ret_val = yyparse((void *) &tokens);
+        if (ret_val == 0) {
+            switch (tokens.cmd) {
+                case INSERT_CMD:
+                    Server::insert_operation(&tokens);
+                    break;
+                case FIND_CMD:
+                    //
+                    break;
+                case DELETE_CMD:
+                    break;
+                case DELALL_CMD:
+                    break;
+                case SHOW_CMD:
+                    printf("%d integers\n%d strings\n%d floats\n", intlist.size, stringlist.size, floatlist.size);
+                    break;
+            }
+            //stringlist.addNode(tokens.data.str_data);
+        }
+        yy_delete_buffer(bp);
+
         if (Helper::writeline(clientsocket, buffer, strlen(buffer)) < 0) {
             break;
         }
         printf("\nServer Echoed:  %s\n", buffer);
-    } while (strncmp(buffer, "exit", 4));
-    client_details.erase(tmp);
+        memset(buffer, 0, sizeof buffer);
+    }
+    client_details.erase(clientsocket);
+    //stringlist.printList();
     if (close(clientsocket) < 0) {
         throw SocketException("Error in calling close");
     }
     pthread_exit(NULL);
 }
 
-void* Server::wait_stdin(void *arg) {
-
+void* wait_stdin(void *arg) {
     pthread_detach(pthread_self());
     std::string text;
     while (1) {
@@ -59,7 +104,7 @@ void* Server::wait_stdin(void *arg) {
 
             std::map<int, std::pair<std::string, std::string> >::iterator iter = client_details.begin();
 
-            for (iter = Server::client_details.begin(); iter != Server::client_details.end(); ++iter)
+            for (iter = client_details.begin(); iter != client_details.end(); ++iter)
                 std::cout << (iter->second).first << ":" << (iter->second).second << '\n';
 
         }
