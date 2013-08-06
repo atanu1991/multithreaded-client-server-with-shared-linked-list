@@ -24,6 +24,10 @@ extern LinkedList<int> intlist;
 extern LinkedList<float> floatlist;
 extern std::map<int, std::pair<std::string, std::string> > client_details;
 
+extern bool ABORT;
+extern int serv_port;
+extern pthread_mutex_t lock_parse;
+
 void * wait_stdin(void *arg);
 void * process_request(void *arg);
 int yyparse(void *);

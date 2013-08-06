@@ -14,12 +14,15 @@ std::map<int, std::pair<std::string, std::string> > client_details;
 LinkedList<std::string> stringlist;
 LinkedList<int> intlist;
 LinkedList<float> floatlist;
+pthread_mutex_t lock_parse = PTHREAD_MUTEX_INITIALIZER;
+bool ABORT = 0;
 
+int serv_port = -1;
 Server::Server(int port) {
 
     printf("Starting the Server With Port(%d)\n", port);
     /*create a listening socket*/
-    s.create();
+    serv_port =s.create();
     /*Bind our socket address to the listening socket*/
     s.bind(port);
 }
@@ -127,20 +130,24 @@ void * process_request(void *parm) {
     int clientsocket = tmp;
     char buffer[MAXLINE];
     std::string mssg;
-    while (1) {
+    while (!ABORT) {
         if (Helper::readline(clientsocket, buffer, MAXLINE - 1) < 0) {
             break;
         }
-        printf("Client with socket id %d Said: %s\n", clientsocket, buffer);
+        //printf("Client with socket id %d Said: %s\n", clientsocket, buffer);
         if (strncmp(buffer, "exit", 4) == 0) {
             Helper::writeline(clientsocket, buffer, sizeof buffer);
             break;
         }
+
+        pthread_mutex_lock(&lock_parse);
         struct parsed_vals tokens;
         YY_BUFFER_STATE bp = yy_scan_string(buffer);
         yy_switch_to_buffer(bp);
-
         int ret_val = yyparse((void *) &tokens);
+        yy_delete_buffer(bp);
+        pthread_mutex_unlock(&lock_parse);
+
         if (ret_val == 0) {
             switch (tokens.cmd) {
                 case INSERT_CMD:
@@ -166,11 +173,10 @@ floats\t" << stringlist.size << " strings\n";
         } else {
             mssg = "Invalid command issued!!!\n";
         }
-        yy_delete_buffer(bp);
-        
+
         if (Helper::writeline(clientsocket, (char *) (mssg.c_str()), mssg.length()) < 0) {
             break;
-        }  
+        }
         memset(buffer, 0, sizeof buffer);
     }
     client_details.erase(clientsocket);

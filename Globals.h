@@ -10,13 +10,21 @@
 #include <map>
 #include <string>
 
-enum CMD {INSERT_CMD=1, DELETE_CMD, FIND_CMD, DELALL_CMD, SHOW_CMD};
-enum TYPE {INT_TYPE=6, FLOAT_TYPE, STRING_TYPE};
+static const char death_msg[] =  "I am sorry to say that the server has been shut!\n";
 
-struct parsed_vals{
+enum CMD {
+    INSERT_CMD = 1, DELETE_CMD, FIND_CMD, DELALL_CMD, SHOW_CMD
+};
+
+enum TYPE {
+    INT_TYPE = 6, FLOAT_TYPE, STRING_TYPE
+};
+
+struct parsed_vals {
     int cmd;
     int type;
-    union{      
+
+    union {
         int int_data;
         float float_data;
         char *str_data;

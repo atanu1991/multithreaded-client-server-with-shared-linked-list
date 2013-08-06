@@ -9,6 +9,7 @@
 #include "Socket.h"
 #include "Helper.h"
 #include "SocketException.h"
+#include "Globals.h"
 
 Client::Client(std::string host, int port) {
     // Create a listening socket
@@ -36,10 +37,13 @@ void Client::handle_client(FILE* fp, int sock_fd) {
         if (strncmp(recvline, "exit", 4) == 0)
             break;
         printf("%s", recvline);
+        if (strcmp(recvline, death_msg) == 0)
+            break;
         memset(recvline, 0, MAXLINE + 1);
         memset(sendline, 0, MAXLINE + 1);
     }
     if (ferror(fp)) {
         std::cerr << ("CLIENT:Error reading file\n");
     }
+    return ;
 }

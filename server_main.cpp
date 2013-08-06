@@ -8,14 +8,24 @@
 #include "Server.h"
 #include <signal.h>
 
+void sigintHandler(int signum) {
+
+    ABORT = 1;
+    std::map<int, std::pair<std::string, std::string> >::iterator iter = client_details.begin();
+    for (iter = client_details.begin(); iter != client_details.end(); ++iter) {
+        Helper::writeline(iter->first, (char *) death_msg, sizeof death_msg);
+    }
+    ::close(serv_port);
+    exit(0);
+}
+
 int main(int argc, char *argv[]) {
     short int port; /*port number */
     char *endptr; /*for strtol() */
 
     signal(SIGPIPE, SIG_IGN);
-
-    //signal(SIGINT, SIG_IGN);
-    // Check the number of parameters
+    signal(SIGINT, sigintHandler);
+    //Check the number of parameters
     if (argc != 2) {
         // Tell the user how to run the program
         // Exactly 2 arguments expected: the program name, the port number the port number to start the server on
@@ -25,7 +35,7 @@ int main(int argc, char *argv[]) {
     if (argc == 2) {
         port = strtol(argv[1], &endptr, 0);
         if (*endptr) {
-            printf("ECHOSERV :Invalid port Number\n");
+            printf("SERVER :Invalid port Number\n");
             exit(EXIT_FAILURE);
         }
     }

@@ -23,7 +23,7 @@ bool LinkedList<T>::addNode(T data) {
             tmp->next = head;
             head = tmp;
             ++size;
-            index_map.insert(std::pair<T, bool>(data, true));
+            index_map.insert(std::pair<T, Node<T> *>(data, tmp));
             release_lock();
             return true;
         } catch (std::exception & ex) {
@@ -33,6 +33,40 @@ bool LinkedList<T>::addNode(T data) {
     } else
         return true;
 }
+
+/*
+template <class T>
+bool LinkedList<T>::deleteNode(T data) {
+    if (check_if_exists(data)) {
+        init_lock(1);
+        Node<T> *curr = index_map[data];
+        index_map.erase(data);
+        if (curr->next != NULL) {
+            Node<T> *tmp = curr->next;
+            index_map.erase(tmp->data);
+            curr->data = tmp->data;
+            curr->next = tmp->next;
+            index_map.insert(std::pair<T, Node<T> *>(curr->data, curr));
+            delete tmp;
+        } else {
+            if (curr == head)
+                head = NULL;
+            else {
+                //Avoid lost pointer problem
+                Node<T> *travel = head;
+                while (travel->next->next)
+                    travel = travel->next;
+                travel->next = NULL;
+            }
+            delete curr;
+        }
+        --size;
+        release_lock();
+        return true;
+    } else
+        return false;
+}
+*/
 
 template <class T>
 bool LinkedList<T>::deleteNode(T data) {
@@ -63,6 +97,7 @@ bool LinkedList<T>::deleteNode(T data) {
     } else
         return false;
 }
+
 
 template <class T>
 bool LinkedList<T>::check_if_exists(T data) {
@@ -109,7 +144,9 @@ void LinkedList<T>::destroyList() {
         head = head->next;
         delete(tmp);
     }
-    size=0;
+    size = 0;
+    index_map.clear();
+    head = NULL;
     release_lock();
 }
 

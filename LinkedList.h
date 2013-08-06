@@ -35,7 +35,7 @@ public:
 
 private:
 
-    std::map<T, bool> index_map;
+    std::map<T, Node<T> *> index_map;
     void init_lock(int);
     void release_lock();
     pthread_rwlock_t rwlock;
