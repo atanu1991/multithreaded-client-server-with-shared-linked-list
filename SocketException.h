@@ -9,6 +9,8 @@ class SocketException {
 public:
 
     SocketException(std::string s) : m_s(s) {
+        std::cerr<<description();
+        exit(0);
     };
 
     ~SocketException() {

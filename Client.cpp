@@ -8,13 +8,12 @@
 #include "Client.h"
 #include "Socket.h"
 #include "Helper.h"
-#include "SocketException.h"
 #include "Globals.h"
 
 Client::Client(std::string host, int port) {
     // Create a listening socket
     socket_id = s.create();
-    printf("\nCLIENT: Connecting to server %s with port %d", host.c_str(), port);
+    printf("CLIENT: Connecting to server %s with port %d\n", host.c_str(), port);
     s.connect(host, port);
 
 }
@@ -25,15 +24,15 @@ Client::~Client() {
 void Client::handle_client(FILE* fp, int sock_fd) {
     int n;
     char sendline[MAXLINE], recvline[MAXLINE + 1];
-    printf("\nEnter A Message or \"exit\" to exit\n");
+    printf("Enter A Message or \"exit\" to exit\n");
     while (fgets(sendline, MAXLINE, fp) != NULL) {
         n = strlen(sendline);
         if (Helper::writeline(sock_fd, sendline, n) != n)
-            throw SocketException("CLIENT:Write error on socket\n");
+            std::cerr << ("CLIENT:Write error on socket\n");
         /*read a line from socket,write to standard output*/
         n = Helper::readline(sock_fd, recvline, MAXLINE);
         if (n < 0)
-            throw SocketException("CLIENT:Read error on socket\n");
+            std::cerr << ("CLIENT:Read error on socket\n");
         if (strncmp(recvline, "exit", 4) == 0)
             break;
         printf("%s", recvline);
@@ -45,5 +44,5 @@ void Client::handle_client(FILE* fp, int sock_fd) {
     if (ferror(fp)) {
         std::cerr << ("CLIENT:Error reading file\n");
     }
-    return ;
+    return;
 }

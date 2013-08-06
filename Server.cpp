@@ -7,7 +7,6 @@
 
 #include "Server.h"
 #include "Socket.h"
-#include "SocketException.h"
 #include <map>
 
 std::map<int, std::pair<std::string, std::string> > client_details;
@@ -18,11 +17,12 @@ pthread_mutex_t lock_parse = PTHREAD_MUTEX_INITIALIZER;
 bool ABORT = 0;
 
 int serv_port = -1;
+
 Server::Server(int port) {
 
     printf("Starting the Server With Port(%d)\n", port);
     /*create a listening socket*/
-    serv_port =s.create();
+    serv_port = s.create();
     /*Bind our socket address to the listening socket*/
     s.bind(port);
 }
@@ -181,7 +181,7 @@ floats\t" << stringlist.size << " strings\n";
     }
     client_details.erase(clientsocket);
     if (::close(clientsocket) < 0) {
-        throw SocketException("Error in calling close");
+        std::cerr << "Error in calling close\n";
     }
     pthread_exit(NULL);
 }

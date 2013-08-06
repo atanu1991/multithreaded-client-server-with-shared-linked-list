@@ -23,7 +23,7 @@ public:
     int socket_id;
     void handle_client(FILE *, int);
 private:
-    
+
 };
 
 #endif	/* CLIENT_H */
