@@ -36,7 +36,6 @@ public:
 
 private:
 
-    //std::map<T, bool> index_map;
     std::tr1::unordered_map<T, bool> index_un_map;
     void init_lock(int);
     void release_lock();

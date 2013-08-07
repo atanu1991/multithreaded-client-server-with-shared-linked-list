@@ -23,7 +23,6 @@ bool LinkedList<T>::addNode(T data) {
             tmp->next = head;
             head = tmp;
             ++size;
-            //index_map.insert(std::pair<T, bool>(data, 1));
             index_un_map.insert(std::pair<T, bool>(data, 1));
             release_lock();
             return true;
@@ -56,14 +55,6 @@ bool LinkedList<T>::check_if_exists(T data) {
         release_lock();
         return false;
     }
-    /*
-     else {
-        if (index_map[data] == 0) {
-            release_lock();
-            return false;
-        }
-    }
-     */
     release_lock();
     return true;
 }
@@ -103,7 +94,6 @@ void LinkedList<T>::destroyList() {
         delete(tmp);
     }
     size = 0;
-    //index_map.clear();
     index_un_map.clear();
     head = NULL;
     release_lock();
