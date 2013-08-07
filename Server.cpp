@@ -134,7 +134,6 @@ void * process_request(void *parm) {
         if (Helper::readline(clientsocket, buffer, MAXLINE - 1) < 0) {
             break;
         }
-        //printf("Client with socket id %d Said: %s\n", clientsocket, buffer);
         if (strncmp(buffer, "EXIT", 4) == 0 || strncmp(buffer, "exit", 4) == 0) {
             Helper::writeline(clientsocket, buffer, sizeof buffer);
             break;
@@ -192,8 +191,8 @@ void* wait_stdin(void *arg) {
     while (1) {
         std::getline(std::cin, text);
         if (0 == text.compare("show client details") || 0 == text.compare("SHOW CLIENT DETAILS")) {
-            std::map<int, std::pair<std::string, std::string> >::iterator iter = client_details.begin();
 
+            std::map<int, std::pair<std::string, std::string> >::iterator iter = client_details.begin();
             for (iter = client_details.begin(); iter != client_details.end(); ++iter)
                 std::cout << (iter->second).first << ":" << (iter->second).second << '\n';
         }
