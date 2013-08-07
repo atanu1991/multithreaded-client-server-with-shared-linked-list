@@ -108,6 +108,6 @@ bool Socket::connect(const std::string host, const int port) {
 
 int Socket::close() {
     if (::close(m_sock) != 0)
-        throw new SocketException(" call to close failed due to an error (Wrong file-descriptor or I/O error)\n");
+        throw new SocketException("Call to close failed due to an error (Wrong file-descriptor or I/O error)\n");
     return 0;
 }

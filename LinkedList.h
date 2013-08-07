@@ -6,6 +6,7 @@
 #include <string>
 #include <map>
 #include <pthread.h>
+#include <tr1/unordered_map>
 
 template <class T>
 
@@ -35,7 +36,8 @@ public:
 
 private:
 
-    std::map<T, Node<T> *> index_map;
+    //std::map<T, bool> index_map;
+    std::tr1::unordered_map<T, bool> index_un_map;
     void init_lock(int);
     void release_lock();
     pthread_rwlock_t rwlock;

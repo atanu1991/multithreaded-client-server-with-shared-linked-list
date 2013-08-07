@@ -23,7 +23,8 @@ bool LinkedList<T>::addNode(T data) {
             tmp->next = head;
             head = tmp;
             ++size;
-            index_map.insert(std::pair<T, Node<T> *>(data, tmp));
+            //index_map.insert(std::pair<T, bool>(data, 1));
+            index_un_map.insert(std::pair<T, bool>(data, 1));
             release_lock();
             return true;
         } catch (std::exception & ex) {
@@ -34,78 +35,35 @@ bool LinkedList<T>::addNode(T data) {
         return true;
 }
 
-/*
 template <class T>
 bool LinkedList<T>::deleteNode(T data) {
     if (check_if_exists(data)) {
         init_lock(1);
-        Node<T> *curr = index_map[data];
-        index_map.erase(data);
-        if (curr->next != NULL) {
-            Node<T> *tmp = curr->next;
-            index_map.erase(tmp->data);
-            curr->data = tmp->data;
-            curr->next = tmp->next;
-            index_map.insert(std::pair<T, Node<T> *>(curr->data, curr));
-            delete tmp;
-        } else {
-            if (curr == head)
-                head = NULL;
-            else {
-                //Avoid lost pointer problem
-                Node<T> *travel = head;
-                while (travel->next->next)
-                    travel = travel->next;
-                travel->next = NULL;
-            }
-            delete curr;
-        }
+        //index_map.erase(data);
+        index_un_map.erase(data);
         --size;
         release_lock();
         return true;
     } else
         return false;
 }
-*/
-
-template <class T>
-bool LinkedList<T>::deleteNode(T data) {
-    if (check_if_exists(data)) {
-        init_lock(1);
-        Node<T> *curr = head, *prev = NULL;
-        while (curr) {
-            if (curr->data == data)
-                break;
-            prev = curr;
-            curr = curr->next;
-        }
-        if (curr) {
-            if (prev) {
-                prev->next = curr->next;
-            } else {
-                head = curr->next;
-            }
-            delete(curr);
-            --size;
-            index_map.erase(data);
-            release_lock();
-            return true;
-        } else {
-            release_lock();
-            return false;
-        }
-    } else
-        return false;
-}
-
 
 template <class T>
 bool LinkedList<T>::check_if_exists(T data) {
     init_lock(0);
-    if (index_map.find(data) == index_map.end()) {
+    //if (index_map.find(data) == index_map.end()) {
+    if (index_un_map.find(data) == index_un_map.end()) {
         release_lock();
         return false;
     }
+    /*
+     else {
+        if (index_map[data] == 0) {
+            release_lock();
+            return false;
+        }
+    }
+     */
     release_lock();
     return true;
 }
@@ -145,7 +103,8 @@ void LinkedList<T>::destroyList() {
         delete(tmp);
     }
     size = 0;
-    index_map.clear();
+    //index_map.clear();
+    index_un_map.clear();
     head = NULL;
     release_lock();
 }

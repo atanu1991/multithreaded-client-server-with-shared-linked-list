@@ -33,7 +33,7 @@ void Client::handle_client(FILE* fp, int sock_fd) {
         n = Helper::readline(sock_fd, recvline, MAXLINE);
         if (n < 0)
             std::cerr << ("CLIENT:Read error on socket\n");
-        if (strncmp(recvline, "exit", 4) == 0)
+        if (strncmp(recvline, "exit", 4) == 0 || strncmp(recvline, "EXIT", 4) == 0)
             break;
         printf("%s", recvline);
         if (strcmp(recvline, death_msg) == 0)
@@ -44,5 +44,6 @@ void Client::handle_client(FILE* fp, int sock_fd) {
     if (ferror(fp)) {
         std::cerr << ("CLIENT:Error reading file\n");
     }
+    printf("bye\n");
     return;
 }
