@@ -18,13 +18,13 @@ lex.yy.o: lex_file.ll
 	flex --header-file="Lexheader.h" lex_file.ll
 	g++ -c lex.yy.c yacc_file.tab.cc
 	
-Socket: Socket.cpp
-Client: Client.cpp
-Helper: Helper.cpp
-Server_main: server_main.cpp
-Client_main: client_main.cpp
-LinkedList: LinkedList.cpp
-Server: Server.cpp
+Socket.o: Socket.cpp
+Client.o: Client.cpp
+Helper.o: Helper.cpp
+server_main.o: server_main.cpp
+client_main.o: client_main.cpp
+LinkedList.o: LinkedList.cpp
+Server.o: Server.cpp
 
 clean:
 	rm -f *.o serv cli Lexheader.h lex.y* yacc_file.t*
