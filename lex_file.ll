@@ -10,8 +10,9 @@
 %}
 alpha [A-Za-z]
 digit [0-9]
-%%
 
+%option case-insensitive
+%%
 
 "DELETE ALL" return DELALL;
 "SHOW STATUS" return SHSTAT;
