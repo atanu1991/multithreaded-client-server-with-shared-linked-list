@@ -229,3 +229,11 @@ void Server::start_listening() {
         }
     }
 }
+
+void Server::populate_lists() {
+    
+    intlist.fillList(INT_FILE_PATH);
+    floatlist.fillList(FLOAT_FILE_PATH);
+    stringlist.fillList(STRING_FILE_PATH);
+    
+}

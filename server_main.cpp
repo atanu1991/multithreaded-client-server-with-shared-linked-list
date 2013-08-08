@@ -16,6 +16,11 @@ void sigintHandler(int signum) {
         Helper::writeline(iter->first, (char *) death_msg, sizeof death_msg);
     }
     ::close(serv_port);
+    
+    intlist.printList(INT_FILE_PATH);
+    floatlist.printList(FLOAT_FILE_PATH);
+    stringlist.printList(STRING_FILE_PATH);
+    
     exit(0);
 }
 
@@ -41,6 +46,7 @@ int main(int argc, char *argv[]) {
     }
 
     Server sv(port);
+    sv.populate_lists();
     sv.start_listening();
 
     return 0;

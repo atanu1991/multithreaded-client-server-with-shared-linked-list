@@ -40,6 +40,7 @@ public:
     };
     virtual ~Server();
     void start_listening();
+    void populate_lists();
     Socket s;
     time_t rawtime;
     static void insert_operation(struct parsed_vals *, std::string &);

@@ -30,7 +30,8 @@ public:
     bool deleteNode(T data);
     bool check_if_exists(T data);
     Node<T> * searchNode(T data);
-    void printList();
+    void printList(const char *);
+    void fillList(const char *);
     void destroyList();
     int size;
 

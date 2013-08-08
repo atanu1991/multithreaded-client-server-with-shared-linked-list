@@ -38,7 +38,6 @@ template <class T>
 bool LinkedList<T>::deleteNode(T data) {
     if (check_if_exists(data)) {
         init_lock(1);
-        //index_map.erase(data);
         index_un_map.erase(data);
         --size;
         release_lock();
@@ -50,7 +49,6 @@ bool LinkedList<T>::deleteNode(T data) {
 template <class T>
 bool LinkedList<T>::check_if_exists(T data) {
     init_lock(0);
-    //if (index_map.find(data) == index_map.end()) {
     if (index_un_map.find(data) == index_un_map.end()) {
         release_lock();
         return false;
@@ -72,16 +70,38 @@ Node<T> * LinkedList<T>::searchNode(T data) {
 }
 
 template <class T>
-void LinkedList<T>::printList() {
+void LinkedList<T>::printList(const char * path) {
     Node<T> * tmp = head;
-    bool printNewLine = (tmp) ? true : false;
-    while (tmp) {
-        std::cout << tmp->data << "|";
-        tmp = tmp->next;
+    std::ofstream output;
+    output.open(path);
+    if (output.is_open())
+        while (tmp) {
+            if (check_if_exists(tmp->data)) {
+                output << tmp->data << "\n";
+                index_un_map.erase(tmp->data);
+            }
+            tmp = tmp->next;
+        }
+    output.close();
+    return;
+}
+
+template <class T>
+void LinkedList<T>::fillList(const char * path) {
+    std::ifstream input;
+    input.open(path);
+    if (input.is_open()) {
+        std::string line;
+        T data;
+        while (getline(input, line)) {
+            std::stringstream ss(line);
+            ss >> data;
+            addNode(data);
+        }
     }
-    if (printNewLine) {
-        std::cerr << std::endl;
-    }
+    input.close();
+    return;
+
 }
 
 template <class T>
