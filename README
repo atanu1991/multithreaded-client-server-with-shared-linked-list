@@ -15,5 +15,5 @@ TODO:
 1) Parse client side queries (using lex,yacc / bison,flex).
 2) Perform operations on LinkedList using locks.
 
-Please fell free to give as much fedback as possible.
+Please feel free to give as much fedback as possible.
 
