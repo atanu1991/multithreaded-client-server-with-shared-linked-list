@@ -1,9 +1,6 @@
 multithreaded-client-server-with-shared-linked-list
 ===================================================
 
-Basic functionality of ECHO SERVER implemented.
-Also template of LinkedList code included.
-
 To Run it:
 --> Git clone the repo.
 --> cd ~/multithreaded-client-server-with-shared-linked-list
@@ -11,9 +8,5 @@ To Run it:
 --> Run './serv <PORT NUMBER>' on one terminal window.
 --> Fire up as many other terminal windows and run './cli <PORT NUMBER> [<IP ADDRESS>]'
 
-TODO:
-1) Parse client side queries (using lex,yacc / bison,flex).
-2) Perform operations on LinkedList using locks.
-
-Please feel free to give as much fedback as possible.
+Please feel free to give as much feedback as possible.
 
