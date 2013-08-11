@@ -58,18 +58,6 @@ bool LinkedList<T>::check_if_exists(T data) {
 }
 
 template <class T>
-Node<T> * LinkedList<T>::searchNode(T data) {
-    Node<T> * tmp = head;
-    while (tmp) {
-        if (tmp->data == data) {
-            return tmp;
-        }
-        tmp = tmp->next;
-    }
-    return NULL;
-}
-
-template <class T>
 void LinkedList<T>::printList(const char * path) {
     Node<T> * tmp = head;
     std::ofstream output;
