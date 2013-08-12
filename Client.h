@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   Client.h
  * Author: atghosh
  *
@@ -8,23 +8,26 @@
 #ifndef CLIENT_H
 #define	CLIENT_H
 
-#include "Helper.h"
 #include "Socket.h"
+#include "Helper.h"
+#include "Globals.h"
 #include <string>
 
-class Client {
+class Client
+{
 public:
-    Client(std::string host, int port);
+  Client(std::string host, int port);
 
-    Client() {
-    };
-    virtual ~Client();
-    Socket s;
-    int socket_id;
-    void handle_client(FILE *, int);
+  Client()
+  {
+  };
+  virtual ~Client();
+  Socket s;
+  int socket_id;
+  void handle_client(FILE *, int);
 private:
 
-};
+} ;
 
 #endif	/* CLIENT_H */
 
