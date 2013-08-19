@@ -1,9 +1,5 @@
 multithreaded-client-server-with-shared-linked-list
 ===================================================
-<<<<<<< HEAD
-
-=======
->>>>>>> develop
 To Run it:
 
 --> Git clone the repo.
@@ -12,7 +8,6 @@ To Run it:
 --> Run './serv <PORT NUMBER>' on one terminal window.
 --> Fire up as many other terminal windows and run './cli <PORT NUMBER> [<IP ADDRESS>]'
 
-<<<<<<< HEAD
 Please feel free to give as much feedback as possible.
 =======
 Sample client Queries:
@@ -29,5 +24,3 @@ find 6
 PS: All you data is safe and stored in your tmp folder!No need to worry about server crashes.
 
 Please feel free to give as much feedback as possible and do report bugs!
->>>>>>> develop
-
