@@ -8,8 +8,6 @@ To Run it:
 --> Run './serv <PORT NUMBER>' on one terminal window.
 --> Fire up as many other terminal windows and run './cli <PORT NUMBER> [<IP ADDRESS>]'
 
-Please feel free to give as much feedback as possible.
-=======
 Sample client Queries:
 
 INSERT 5
