@@ -1,12 +1,33 @@
 multithreaded-client-server-with-shared-linked-list
 ===================================================
+<<<<<<< HEAD
 
+=======
+>>>>>>> develop
 To Run it:
+
 --> Git clone the repo.
 --> cd ~/multithreaded-client-server-with-shared-linked-list
 --> Run 'make'
 --> Run './serv <PORT NUMBER>' on one terminal window.
 --> Fire up as many other terminal windows and run './cli <PORT NUMBER> [<IP ADDRESS>]'
 
+<<<<<<< HEAD
 Please feel free to give as much feedback as possible.
+=======
+Sample client Queries:
+
+INSERT 5
+INSERT 6
+DELETE 5
+INSERT 5.5
+show status
+delete all
+insert "string"
+find 6
+
+PS: All you data is safe and stored in your tmp folder!No need to worry about server crashes.
+
+Please feel free to give as much feedback as possible and do report bugs!
+>>>>>>> develop
 

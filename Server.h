@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   Server.h
  * Author: atghosh
  *
@@ -32,24 +32,27 @@ void * wait_stdin(void *arg);
 void * process_request(void *arg);
 int yyparse(void *);
 
-class Server {
+class Server
+{
 public:
-    Server(int port);
+  Server(int port);
 
-    Server() {
-    };
-    virtual ~Server();
-    void start_listening();
-    Socket s;
-    time_t rawtime;
-    static void insert_operation(struct parsed_vals *, std::string &);
-    static void find_operation(struct parsed_vals *, std::string &);
-    static void delete_operation(struct parsed_vals *, std::string &);
-    static void delete_all_operation();
+  Server()
+  {
+  };
+  virtual ~Server();
+  void start_listening();
+  void populate_lists();
+  Socket s;
+  time_t rawtime;
+  static void insert_operation(struct parsed_vals *, std::string &);
+  static void find_operation(struct parsed_vals *, std::string &);
+  static void delete_operation(struct parsed_vals *, std::string &);
+  static void delete_all_operation();
 private:
 
-    pthread_t stdin_thread;
-    pthread_t process_thread;
+  pthread_t stdin_thread;
+  pthread_t process_thread;
 
-};
+} ;
 #endif	/* SERVER_H */
