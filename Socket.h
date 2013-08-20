@@ -1,5 +1,3 @@
-// Definition of the Socket class
-
 #ifndef Socket_class
 #define Socket_class
 
@@ -15,8 +13,8 @@
 #include <string.h>
 #include <iostream>
 
-#define MAXLINE 10000
-#define LISTENQ 	(1024)
+#define MAXLINE        10000
+#define LISTENQ        1024
 #define SERV_HOST_ADDR "127.0.0.1"
 
 class Socket
@@ -25,14 +23,11 @@ public:
   Socket();
   virtual ~Socket();
 
-  // Server initialization
   int create();
   int bind(const int port);
   int listen() const;
-
-  // Custom accept function -- Returns IP address of connect client
+  /* Custom accept function -- Returns IP address of connect client */
   std::string accept(int *) const;
-  // Client initialization
   bool connect(const std::string host, const int port);
 
   bool is_valid() const

@@ -1,9 +1,5 @@
-// Implementation of the Socket class.
-
 #include "Socket.h"
 #include "SocketException.h"
-
-#define LISTENQ 	(1024)
 
 Socket::Socket() :
 m_sock(-1)
@@ -74,6 +70,20 @@ int Socket::listen() const
 
   return listen_return;
 }
+
+/*
+  accept the client connection and determines  its IP
+
+  SYNOPSIS
+  acc_ret stores the client id
+
+  NOTES
+    The client id is stored in acc_ret, 
+    the IP address is calculated and returned
+
+  RETURN
+    string  client IP address
+ */
 
 std::string Socket::accept(int *acc_ret) const
 {

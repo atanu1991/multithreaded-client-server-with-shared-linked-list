@@ -25,7 +25,6 @@ public:
   Socket s;
   int socket_id;
   void handle_client(FILE *, int);
-private:
 
 } ;
 
