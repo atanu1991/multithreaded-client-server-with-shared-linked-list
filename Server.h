@@ -49,10 +49,10 @@ public:
   static void find_operation(struct parsed_vals *, std::string &);
   static void delete_operation(struct parsed_vals *, std::string &);
   static void delete_all_operation();
-private:
 
-  pthread_t stdin_thread;
-  pthread_t process_thread;
+private:
+  pthread_t stdin_thread;               /* Thread to handle server side inputs */
+  pthread_t process_thread;             /* Thread to process each client request */
 
 } ;
 #endif	/* SERVER_H */

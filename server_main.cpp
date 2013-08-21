@@ -8,7 +8,21 @@
 #include "Server.h"
 #include <signal.h>
 
-void sigintHandler(int signum)
+/*
+ Handles the SIGINT signal
+
+ @param signum signal number to be handled
+
+ NOTES
+
+ Operations performed::
+ Send message to all the client that server is shut.
+ Close opened ports.
+ Writes data in Linked-List to tmp file.
+
+ */
+
+void signal_Handler(int signum)
 {
 
   ABORT = 1;
@@ -28,16 +42,20 @@ void sigintHandler(int signum)
 
 int main(int argc, char *argv[])
 {
-  short int port; /*port number */
-  char *endptr; /*for strtol() */
+  short int port;                               /*port number */
+  char *endptr;                                 /*for strtol() */
 
   signal(SIGPIPE, SIG_IGN);
-  signal(SIGINT, sigintHandler);
-  //Check the number of parameters
+  signal(SIGINT, signal_Handler);
+
+  /* Check the number of parameters */
   if (argc != 2)
   {
-    // Tell the user how to run the program
-    // Exactly 2 arguments expected: the program name, the port number the port number to start the server on
+    /** Tell the user how to run the program
+        Exactly 2 arguments expected: the program name,
+        the port number to start the server on.
+     */
+
     std::cerr << "Usage: " << argv[0] << " <PORT NUMBER>" << std::endl;
     return 1;
   }

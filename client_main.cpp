@@ -6,15 +6,23 @@
  */
 #include "Client.h"
 #include "Socket.h"
-#include <string>
 
 int main(int argc, char* argv[])
 {
   int port;
-  char *endptr; //for strtol()
+  char *endptr;                         /* for strtol() */
   char *svraddr = (char *) SERV_HOST_ADDR;
+
+  /* Check the number of parameters */
+
+
   if (argc == 2 || argc == 3)
   {
+    /** Tell the user how to run the program
+       Exactly 2 or 3 arguments expected: the program name,
+       the port number and IP address (default --> 127.0.0.1)
+     */
+
     port = strtol(argv[1], &endptr, 0);
     if (*endptr)
     {

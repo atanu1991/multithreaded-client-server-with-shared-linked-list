@@ -7,16 +7,20 @@
 
 #ifndef GLOBALS_H
 #define	GLOBALS_H
+
 #include <map>
 #include <string>
 #include <iostream>
 #include <fstream>
 
+/* Path to store data when server is killed */
+
 #define INT_FILE_PATH "/tmp/mcsll_int"
 #define FLOAT_FILE_PATH "/tmp/mcsll_float"
 #define STRING_FILE_PATH "/tmp/mcsll_string"
 
-static const char death_msg[] =  "I am sorry to say that the server has been shut!\n";
+static const char death_msg[] =  "I am sorry to \
+say that the server has been shut!\n";              /* Server killed message*/
 
 enum CMD
 {
@@ -28,6 +32,7 @@ enum TYPE
   INT_TYPE = 6, FLOAT_TYPE, STRING_TYPE
 } ;
 
+/*  Structure to be sent to the parser to store the return values */
 struct parsed_vals
 {
   int cmd;
@@ -40,5 +45,6 @@ struct parsed_vals
     char *str_data;
   } data;
 } ;
+
 #endif	/* GLOBALS_H */
 

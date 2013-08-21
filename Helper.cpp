@@ -1,5 +1,15 @@
-// Implementation of the Helper class
 #include "Helper.h"
+
+/*
+  read the string from the file descriptor and store it in buffer
+
+  @param fd     file-descriptor
+  @parma ptr    buffer to store the data read from fd
+  @parma maxlen maximum number of characters to read
+
+  RETURN
+    int  the number of characters read
+ */
 
 int Helper::readline(int fd, char *ptr, int maxlen)
 {
@@ -25,6 +35,17 @@ int Helper::readline(int fd, char *ptr, int maxlen)
   *bufptr = 0;
   return (n);
 }
+
+/*
+  read nbytes from the buffer and write to fd
+
+  @param fd     file-descriptor
+  @parma ptr    buffer containing data
+  @parma nbytes maximum number of bytes to read
+
+  RETURN
+    int  the number of characters written
+ */
 
 int Helper::writeline(int fd, char *ptr, int nbytes)
 {

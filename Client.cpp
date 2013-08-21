@@ -9,7 +9,6 @@
 
 Client::Client(std::string host, int port)
 {
-  // Create a listening socket
   socket_id = s.create();
   printf("CLIENT: Connecting to server %s with port %d\n", host.c_str(), port);
   s.connect(host, port);
@@ -30,7 +29,7 @@ void Client::handle_client(FILE* fp, int sock_fd)
     n = strlen(sendline);
     if (Helper::writeline(sock_fd, sendline, n) != n)
       std::cerr << ("CLIENT:Write error on socket\n");
-    /*read a line from socket,write to standard output*/
+    /* read a line from socket,write to standard output */
     n = Helper::readline(sock_fd, recvline, MAXLINE);
     if (n < 0)
       std::cerr << ("CLIENT:Read error on socket\n");

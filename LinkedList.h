@@ -40,10 +40,15 @@ public:
 
 private:
 
+  /* unordered_map is similar to hash_map O(1) lookup, insert, delete
+   faster than map which is O(log n)
+
+   */
   std::tr1::unordered_map<T, bool> index_un_map;
   void init_lock(int);
   void release_lock();
-  pthread_rwlock_t rwlock;
-  Node<T> * head;
+  pthread_rwlock_t rwlock;      /* Read-Write Lock for the LinkedList */
+  Node<T> * head;               /* Head of the LinkedList */
+
 } ;
 #endif

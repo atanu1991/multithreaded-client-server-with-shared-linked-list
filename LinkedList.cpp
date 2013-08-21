@@ -40,6 +40,11 @@ bool LinkedList<T>::addNode(T data)
     return true;
 }
 
+/*
+ To optimize this operation only the index entry
+ is removed without deleting from the actual LinkedList.
+ */
+
 template <class T>
 bool LinkedList<T>::deleteNode(T data)
 {
@@ -67,6 +72,11 @@ bool LinkedList<T>::check_if_exists(T data)
   return true;
 }
 
+/*
+ Print the list into a file
+
+ @param path file name to write the data into
+ */
 template <class T>
 void LinkedList<T>::printList(const char * path)
 {
@@ -86,6 +96,12 @@ void LinkedList<T>::printList(const char * path)
   output.close();
   return;
 }
+
+/*
+ Populate the list from data in the file
+
+ @param path file name from which data is to be read
+ */
 
 template <class T>
 void LinkedList<T>::fillList(const char * path)
