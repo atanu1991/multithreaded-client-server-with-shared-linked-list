@@ -24,7 +24,7 @@ int Socket::create()
                   0);
 
   if (!is_valid())
-    throw new SocketException("Could not create listening socket.\n");
+    throw SocketException("Could not create listening socket.\n");
 
   return m_sock;
 
@@ -48,7 +48,7 @@ int Socket::bind(const int port)
 
   if (bind_return == -1)
   {
-    throw new SocketException("Could not bind to this port. May be in use!\n");
+    throw SocketException("Could not bind to this port. May be in use!\n");
   }
 
   return bind_return;
@@ -65,7 +65,7 @@ int Socket::listen() const
 
   if (listen_return == -1)
   {
-    throw new SocketException("Could not listen to socket.\n");
+    throw SocketException("Could not listen to socket.\n");
   }
 
   return listen_return;
@@ -78,7 +78,7 @@ int Socket::listen() const
   acc_ret stores the client id
 
   NOTES
-    The client id is stored in acc_ret, 
+    The client id is stored in acc_ret,
     the IP address is calculated and returned
 
   RETURN
@@ -94,7 +94,7 @@ std::string Socket::accept(int *acc_ret) const
   int ret_val = ::accept(m_sock, (struct sockaddr *) & (clientaddr), (socklen_t *) & sizeofclientaddr);
 
   if (ret_val <= 0)
-    throw new SocketException("Could not create client socket due to an unexpected error.\n");
+    throw SocketException("Could not create client socket due to an unexpected error.\n");
   else
   {
     *acc_ret = ret_val;
@@ -124,12 +124,12 @@ bool Socket::connect(const std::string host, const int port)
   if (status == 0)
     return true;
   else
-    throw new SocketException("Client Cannot Connect To Server (Invalid Port or Server Problem)\n");
+    throw SocketException("Client Cannot Connect To Server (Invalid Port or Server Problem)\n");
 }
 
 int Socket::close()
 {
   if (::close(m_sock) != 0)
-    throw new SocketException("Call to close failed due to an error (Wrong file-descriptor or I/O error)\n");
+    throw SocketException("Call to close failed due to an error (Wrong file-descriptor or I/O error)\n");
   return 0;
 }
