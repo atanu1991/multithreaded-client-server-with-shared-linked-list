@@ -192,8 +192,8 @@ void * process_request(void *cli_id)
     }
 
     /* lock the parsing operation */
-    pthread_mutex_lock(&lock_parse);
     struct parsed_vals tokens;
+    pthread_mutex_lock(&lock_parse);
     YY_BUFFER_STATE bp = yy_scan_string(buffer);
     yy_switch_to_buffer(bp);
     int ret_val = yyparse((void *) &tokens);
