@@ -27,6 +27,12 @@ void Client::handle_client(FILE* fp, int sock_fd)
   while (fgets(sendline, MAXLINE, fp) != NULL)
   {
     n = strlen(sendline);
+    std::string str(sendline);
+    if (str.find_first_not_of(' ') == n - 1)
+    {
+      std::cout << "mcsll> ";
+      continue;
+    }
     if (Helper::writeline(sock_fd, sendline, n) != n)
       std::cerr << ("CLIENT:Write error on socket\n");
     /* read a line from socket,write to standard output */
@@ -40,7 +46,7 @@ void Client::handle_client(FILE* fp, int sock_fd)
       break;
     memset(recvline, 0, MAXLINE + 1);
     memset(sendline, 0, MAXLINE + 1);
-    std::cout<<"mcsll> "; 
+    std::cout << "mcsll> ";
   }
   if (ferror(fp))
   {
