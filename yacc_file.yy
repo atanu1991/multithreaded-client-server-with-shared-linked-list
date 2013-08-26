@@ -6,23 +6,23 @@
 
 void yyerror(const char *s)
 {
-    fprintf(stderr, "error: %s\n", s);
+  fprintf(stderr, "error: %s\n", s);
 }
 extern "C"
 {
-        int yylex(void);
-        int yywrap()
-        {
-                return 1;
-        }
+  int yylex(void);
+  int yywrap()
+  {
+    return 1;
+  }
 }
 %}
 
 %token INSERT DELETE DELALL FIND ENDL SHSTAT QUOTE
 %union {
-    int ival;
-    float fval;
-    char *sval;
+  int ival;
+  float fval;
+  char *sval;
 }
 
 %token <ival> INT
