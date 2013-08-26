@@ -23,7 +23,7 @@ void Client::handle_client(FILE* fp, int sock_fd)
 {
   int n;
   char sendline[MAXLINE], recvline[MAXLINE + 1];
-  printf("Enter A Message or \"exit\" to exit\n");
+  printf("Enter A Message or \"exit\" to exit\nmcsll> ");
   while (fgets(sendline, MAXLINE, fp) != NULL)
   {
     n = strlen(sendline);
@@ -40,6 +40,7 @@ void Client::handle_client(FILE* fp, int sock_fd)
       break;
     memset(recvline, 0, MAXLINE + 1);
     memset(sendline, 0, MAXLINE + 1);
+    std::cout<<"mcsll> "; 
   }
   if (ferror(fp))
   {
