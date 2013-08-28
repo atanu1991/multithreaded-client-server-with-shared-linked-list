@@ -12,7 +12,6 @@
 #include "Socket.h"
 #include "Globals.h"
 #include "LinkedList.cpp"
-#include "Globals.h"
 #include "Lexheader.h"
 #include "yacc_file.tab.hh"
 #include <map>
