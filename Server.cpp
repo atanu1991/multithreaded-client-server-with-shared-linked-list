@@ -22,7 +22,7 @@ LinkedList<float> floatlist;
 Server::Server(int port)
 {
 
-  printf("Starting the Server With Port(%d)\n", port);
+  printf("Starting the Server With Port(%d)\nCtrl+C to quit\n", port);
   /* create a listening socket */
   serv_port = s.create();
   /* bind our socket address to the listening socket */

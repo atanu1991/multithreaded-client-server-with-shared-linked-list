@@ -94,7 +94,7 @@ std::string Socket::accept(int *acc_ret) const
   int ret_val = ::accept(m_sock, (struct sockaddr *) & (clientaddr), (socklen_t *) & sizeofclientaddr);
 
   if (ret_val <= 0)
-    throw SocketException("Could not create client socket due to an unexpected error.\n");
+    throw SocketException("Could not accept socket due to an unexpected error.\n");
   else
   {
     *acc_ret = ret_val;
