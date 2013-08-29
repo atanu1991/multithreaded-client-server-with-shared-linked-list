@@ -21,4 +21,6 @@ find 6
 
 PS: All you data is safe and stored in your tmp folder!No need to worry about server crashes.
 
+Note: To run the test cases, cd into the 'perf' folder and read README.
+   
 Please feel free to give as much feedback as possible and do report bugs!
