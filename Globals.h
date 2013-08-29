@@ -22,29 +22,5 @@
 static const char death_msg[] =  "I am sorry to \
 say that the server has been shut!\n";              /* Server killed message*/
 
-enum CMD
-{
-  INSERT_CMD = 1, DELETE_CMD, FIND_CMD, DELALL_CMD, SHOW_CMD
-} ;
-
-enum TYPE
-{
-  INT_TYPE = 6, FLOAT_TYPE, STRING_TYPE
-} ;
-
-/*  Structure to be sent to the parser to store the return values */
-struct parsed_vals
-{
-  int cmd;
-  int type;
-
-  union
-  {
-    int int_data;
-    float float_data;
-    char *str_data;
-  } data;
-} ;
-
 #endif	/* GLOBALS_H */
 

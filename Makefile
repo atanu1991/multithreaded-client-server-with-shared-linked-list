@@ -1,7 +1,7 @@
 # Makefile for the programming assignment
 
 CC= g++
-CFLAGS= -lpthread -g -Wall
+CFLAGS= -lpthread -g -Wall -lfl
 LEX= flex
 YACC= bison
 
@@ -16,12 +16,12 @@ serv: $(server_objects)
 cli: $(client_objects)
 	$(CC) -o $@ $^ $(CFLAGS)
 
-yacc_file.tab.o: yacc_file.yy
+yacc_file.tab.o: yacc_file.y
 	$(YACC) -d $<
 
-lex.yy.o: lex_file.ll
-	$(LEX) --header-file="Lexheader.h" $<
-	$(CC) -c lex.yy.c yacc_file.tab.cc
+lex.yy.o: lex_file.l
+	$(LEX)  $<
+	$(CC) -c lex.yy.c yacc_file.tab.c
 
 Socket.o: Socket.cpp
 Client.o: Client.cpp

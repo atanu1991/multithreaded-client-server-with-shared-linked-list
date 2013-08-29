@@ -191,14 +191,9 @@ void * process_request(void *cli_id)
       break;
     }
 
-    /* lock the parsing operation */
-    struct parsed_vals tokens;
-    pthread_mutex_lock(&lock_parse);
-    YY_BUFFER_STATE bp = yy_scan_string(buffer);
-    yy_switch_to_buffer(bp);
-    int ret_val = yyparse((void *) &tokens);
-    yy_delete_buffer(bp);
-    pthread_mutex_unlock(&lock_parse);
+    Parser context(buffer);
+    int ret_val = yyparse(&context);
+    struct parsed_vals tokens = context.PV;
 
     /* call required function based on the 'cmd; field of struct (here tokens)*/
 

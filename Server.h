@@ -11,9 +11,8 @@
 #include "Helper.h"
 #include "Socket.h"
 #include "Globals.h"
+#include "Parser.h"
 #include "LinkedList.cpp"
-#include "Lexheader.h"
-#include "yacc_file.tab.hh"
 #include <map>
 #include <sstream>
 #include <time.h>
@@ -25,7 +24,6 @@ extern std::map<int, std::pair<std::string, std::string> > client_details;
 
 extern bool ABORT;
 extern int serv_port;
-extern pthread_mutex_t lock_parse;
 
 void * wait_stdin(void *arg);
 void * process_request(void *arg);
