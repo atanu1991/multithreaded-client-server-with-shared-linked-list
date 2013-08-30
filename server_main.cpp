@@ -6,7 +6,6 @@
  */
 
 #include "Server.h"
-#include <signal.h>
 
 /*
  Handles the SIGINT signal
@@ -25,19 +24,25 @@
 void signal_Handler(int signum)
 {
 
-  ABORT = 1;
-  std::map<int, std::pair<std::string, std::string> >::iterator iter = client_details.begin();
-  for (iter = client_details.begin(); iter != client_details.end(); ++iter)
+  if (!client_details.size())
   {
-    Helper::writeline(iter->first, (char *) death_msg, sizeof death_msg);
+    ABORT = 1;
+    std::map<int, std::pair<std::string, std::string> >::iterator iter = client_details.begin();
+    for (iter = client_details.begin(); iter != client_details.end(); ++iter)
+    {
+      Helper::writeline(iter->first, (char *) death_msg, sizeof death_msg);
+    }
+    ::close(serv_port);
+
+    intlist.printList(INT_FILE_PATH);
+    floatlist.printList(FLOAT_FILE_PATH);
+    stringlist.printList(STRING_FILE_PATH);
+
+    exit(0);
+  } else
+  {
+    std::cout << "\nClients connected.Can't ABORT server.\n";
   }
-  ::close(serv_port);
-
-  intlist.printList(INT_FILE_PATH);
-  floatlist.printList(FLOAT_FILE_PATH);
-  stringlist.printList(STRING_FILE_PATH);
-
-  exit(0);
 }
 
 int main(int argc, char *argv[])
@@ -47,6 +52,7 @@ int main(int argc, char *argv[])
 
   signal(SIGPIPE, SIG_IGN);
   signal(SIGINT, signal_Handler);
+  signal(SIGTERM, signal_Handler);
 
   /* Check the number of parameters */
   if (argc != 2)

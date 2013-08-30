@@ -180,7 +180,7 @@ void * process_request(void *cli_id)
   std::string mssg;
   while (!ABORT)
   {
-    if (Helper::readline(clientsocket, buffer, MAXLINE - 1) < 0)
+    if (Helper::readline(clientsocket, buffer, MAXLINE - 1) <= 0)
     {
       break;
     }
@@ -262,9 +262,13 @@ void* wait_stdin(void *arg)
       }
       if (!atleast_one)
         std::cout << "No clients connected\n";
+    } else if (0 == text.compare("shut") || 0 == text.compare("SHUT"))
+    {
+      raise(SIGINT);
+
     } else
     {
-      std::cout << "Invalid Command Issued\nTry \"show client details\"\n";
+      std::cout << "Invalid Command Issued\nTry \"show client details\" or \"shut\"\n";
     }
   }
   pthread_exit(NULL);

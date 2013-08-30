@@ -11,6 +11,7 @@
 #include "Helper.h"
 #include "Socket.h"
 #include "Globals.h"
+#include <signal.h>
 #include "LinkedList.cpp"
 #include "Lexheader.h"
 #include "yacc_file.tab.hh"
