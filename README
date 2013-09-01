@@ -2,7 +2,7 @@ multithreaded-client-server-with-shared-linked-list
 ===================================================
 To Run it:
 
---> Git clone the repo.
+--> Git clone any branch of the repo. (https://github.com/atanu1991/multithreaded-client-server-with-shared-linked-list)
 --> cd ~/multithreaded-client-server-with-shared-linked-list
 --> Run 'make'
 --> Run './serv <PORT NUMBER>' on one terminal window.
